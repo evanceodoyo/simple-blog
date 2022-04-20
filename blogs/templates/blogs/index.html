@@ -1,0 +1,17 @@
+{% extends "blogs/base.html" %}
+
+{% block page_header %}
+  <div class="jumbotron">
+      <h2 class="display-5">Post Your Blog</h2>
+
+      <p class="lead">The blog allows you to add, edit, and delete posts, on any fields of interest. There is no limitation on the number of posts you can create. After making  creating or editing your posts, you can  choose to make your post public (publish) or private.</p>
+    
+      {% if user.is_authenticated%}
+        <a href="{% url 'blogs:posts' %}" class="btn btn-lg btn-primary" role="button">Posts &raquo;</a>
+      {% else %}
+        <a href="{% url 'users:register' %}" class="btn btn-lg btn-primary" role="button">Register &raquo;</a>
+        <a href="{% url 'blogs:posts' %}" class="btn btn-lg btn-info" role="button">Public Posts &raquo;</a>
+      {% endif %}
+  </div>
+
+{% endblock page_header %}

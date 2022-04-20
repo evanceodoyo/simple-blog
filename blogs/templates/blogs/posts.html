@@ -1,0 +1,22 @@
+{% extends "blogs/index.html" %}
+
+{% block page_header %}
+<h2>Blog Posts</h2>
+{% endblock page_header %}
+
+{% block content %}
+
+    <h4><a href="{% url 'blogs:new_post' %}">Add a new post</a></h4>
+    <ul>
+        {% for post in posts %}
+            <li><h4>
+              <a href="{% url 'blogs:post' post.id %}">{{ post }}</a>
+            </h4></li>
+        {% empty %}
+            <li><h4>
+                No blog posts have been added yet.
+            </li></h4>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}

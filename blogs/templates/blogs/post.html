@@ -1,0 +1,34 @@
+{% extends 'blogs/base.html' %}
+
+{% block page_header %}
+    {% if post %}
+      <h4>{{ post.title }}</h4>
+    {% else %}
+      <h4>No posts added for the title yet.</h4>
+    {% endif %}
+
+{% endblock page_header %}
+
+{% block content %}
+  <div class="card mb-3" >
+    <div class="card-header">
+      <h5 >
+        {{ post.date_added|date:'M d, Y H:i' }}
+
+        {% if user.is_authenticated %}
+          <small>
+            <a class="card-link" href="{% url 'blogs:edit_post' post.id %}">Edit Post</a> <a class="card-link" href="{% url 'blogs:delete_post' post.id %}">Delete Post </a>
+          </small>                
+        {% endif %}
+      </h5>
+    </div>
+        
+    <div class="card-body">
+      {{ post.text|linebreaks }}
+
+      <i><strong>Author: {{ post.owner.username.title }} </strong></i>
+    </div>
+      
+  </div>
+
+{% endblock content %}
