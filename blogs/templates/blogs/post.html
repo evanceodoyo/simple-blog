@@ -1,18 +1,16 @@
 {% extends 'blogs/base.html' %}
+{% load bootstrap4 %}
 
 {% block page_header %}
     {% if post %}
-      <h4>{{ post.title }}</h4>
-    {% else %}
-      <h4>No posts added for the title yet.</h4>
+      <h4 class="h4">{{ post.title }}</h4>
     {% endif %}
 
 {% endblock page_header %}
 
 {% block content %}
   <div class="card mb-3" >
-    <div class="card-header">
-      <h5 >
+    <div class="card-header h5">
         {{ post.date_added|date:'M d, Y H:i' }}
 
         {% if user.is_authenticated %}
@@ -20,15 +18,51 @@
             <a class="card-link" href="{% url 'blogs:edit_post' post.id %}">Edit Post</a> <a class="card-link" href="{% url 'blogs:delete_post' post.id %}">Delete Post </a>
           </small>                
         {% endif %}
-      </h5>
     </div>
         
-    <div class="card-body">
+    <div class="card-body h6" style="line-height: 1.5;">
       {{ post.text|linebreaks }}
 
       <i><strong>Author: {{ post.owner.username.title }} </strong></i>
     </div>
-      
   </div>
+  {% if post.allow_comments %}
+    <div class="col-md-8 card mb-4 mt-3">
+      <div class="card-body h6">
+        <!-- comments  -->
+          <h5 class="h">{{ comments.count }} comment{{comments.count | pluralize }}</h5>
+  
+          {% for comment in comments reversed %}
+            <div class="comments" style="padding: 10px;">
+              <p class="font-weight-bold">
+                {{ comment.name }}
+                <span class="text-muted font-weight-normal">
+                  {{ comment.created_on }}
+                </span>
+              </p>
+              {{ comment.body | linebreaks }}
+            </div>
+          {% endfor %}
+  
+      </div>
+    </div>
+    <div class="col-md-8 card mb-4 mt-3">
+      <div class="card-body h6">
+        {% if new_comment %}
+        <div class="alert alert-success" role="alert">Your comment is awaiting review.
+        </div>
+        {% else %}
+          <h5 class="h5">Leave a comment</h5>
+          <form method="post" class="form" style="margin-top: 1.3em;">
+            {% csrf_token %}
+            {% bootstrap_form comment_form %}
+            {% buttons %}
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+            {% endbuttons %}
+          </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
 
 {% endblock content %}

@@ -6,8 +6,8 @@
     {% csrf_token %}
     <p class="alert alert-danger" role="alert">Are you sure you want to delete the post '{{ post.title }}'?</p>
     {% buttons %}
-      <button name="submit" class="btn btn-danger">Delete</button>
-      <button class="btn btn-primary">
+      <button name="submit" class="btn btn-danger btn-sm">Delete</button>
+      <button class="btn btn-primary btn-sm">
         <a href="{% url 'blogs:post' post.id %}" style="color: white;">Go back</a>
       </button>
     {% endbuttons %}

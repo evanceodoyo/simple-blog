@@ -1,5 +1,5 @@
 from django import forms
-from .models import BlogPost
+from .models import BlogPost, Comment
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -9,8 +9,8 @@ from django.core.exceptions import ValidationError
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = BlogPost
-        fields = ['title', 'text', 'publish']
-        labels = {'title': 'Title', 'text': 'Post', 'publish': 'Make Public'}
+        fields = ['title', 'text', 'publish', 'allow_comments']
+        labels = {'title': 'Title', 'text': 'Post', 'publish': 'Make Public', 'allow_comments': 'Allow Comments'}
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}
 
 class CustomUserCreationForm(UserCreationForm):
@@ -53,3 +53,9 @@ class CustomUserCreationForm(UserCreationForm):
         )
 
         return user
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'email', 'body',]
+        labels = {'name':'Name', 'email': 'Email', 'body': 'Comment'}

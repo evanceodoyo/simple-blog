@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.db.models import Q
 
-from .models import BlogPost
-from .forms import BlogPostForm
+from .models import BlogPost, Comment
+from .forms import BlogPostForm, CommentForm
 
 
 # Create your views here.
@@ -20,7 +20,7 @@ def posts(request):
         posts = BlogPost.objects.filter(owner=request.user).order_by('-date_added')
 
     else:
-        # Show posts checked as public to unauthorized users.
+        # Show posts checked as public to unauthenticated users.
         posts = BlogPost.objects.filter(publish=True).order_by('-date_added')
 
     context = {'posts': posts}
@@ -28,7 +28,7 @@ def posts(request):
 
 # @login_required
 def post(request, post_id):
-    """Show a single post."""
+    """Show a single post and the comment section."""
     
     if request.user.is_authenticated:
         post = BlogPost.objects.get(id=post_id)
@@ -42,7 +42,21 @@ def post(request, post_id):
         except BlogPost.DoesNotExist:
             raise Http404          
                    
-    context = {'post': post}
+    post = get_object_or_404(BlogPost, id=post_id)
+    comments = post.comments.filter(active=True)
+    new_comment = None
+
+    if request.method != 'POST':
+        comment_form = CommentForm()
+    else:
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.save()
+    
+    context = {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form}
+
     return render(request, 'blogs/post.html', context)
 
 @login_required
