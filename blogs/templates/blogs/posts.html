@@ -7,6 +7,7 @@
 {% block content %}
 
     <h5 class="h5"><a href="{% url 'blogs:new_post' %}">Add a new post</a></h5>
+    <p>(Click on the title to read the post)</p>
     <ul>
         {% for post in posts %}
             <li><h6>
