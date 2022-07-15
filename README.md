@@ -7,7 +7,7 @@ Evance Odoyo
 # Features 
 * Built with Python 3.8, Django 4.0 Framework
 * Styled using Bootstrap4
-* Use the defualt SQLite DB and Deployed to Heroku; Allows users to:
+* Use the defualt SQLite DB and Allows users to:
     * Register and sign in
     * View posts
     * Add new post
