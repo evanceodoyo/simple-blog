@@ -1,4 +1,4 @@
-{% load bootstrap4 %}
+{% load bootstrap5 %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,14 +9,49 @@
   <title>Blog</title>
 
   {% bootstrap_css %}
-  {% bootstrap_javascript jquery='full' %}
+  {% bootstrap_javascript %}
 
 </head>
 <body>
-  
-  <nav class="py-2 nav navbar-expand navbar-light bg-light mb-4 border">
+  <!--Navbar-->
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark mb-4">
+    <div class="container">
+      <a href="{% url 'blogs:index' %}" class="navbar-brand">Blog</a>
 
-    <a href="{% url 'blogs:index' %}" class="navbar-brand">Blog</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a href="{% url 'blogs:posts' %}" class="nav-link">Blog Posts</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">          
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              Welcome, {{ user.username | title }}.
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'users:logout' %}" class="nav-link">Log out</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a href="{% url 'users:register' %}" class="nav-link">Register</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'users:login' %}" class="nav-link">Log in</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  
+  {% comment %} <nav class="py-2 nav navbar-expand navbar-light bg-light mb-4 border">   
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
     </button>
@@ -45,7 +80,7 @@
         {% endif %}
       </ul>
     </div>
-  </nav>
+  </nav> {% endcomment %}
 
   <main class="container" role="main">
     <div class="pb-2 mb-2 border-bottom">

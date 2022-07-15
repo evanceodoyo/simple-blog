@@ -1,5 +1,5 @@
 {% extends 'blogs/base.html' %}
-{% load bootstrap4 %}
+{% load bootstrap5 %}
 
 {% block page_header %}
   <h4>Sign Up</h4>
@@ -16,5 +16,6 @@
 
       <input type="hidden" name="next" value="{% url 'blogs:index' %}">
   </form>
+  <p>Already have an account? <a href="{% url 'users:login' %}">Log in</a></p>
 
 {% endblock content %}

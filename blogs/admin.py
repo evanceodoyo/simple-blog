@@ -13,7 +13,7 @@ class BlogPostAdmin(admin.ModelAdmin):
         (None, {'fields': ['title', 'owner', 'text', 'publish']}), 
     ]
     inlines = [CommentInline]
-    list_display =('title', 'owner', 'date_added', 'publish')
+    list_display =('title', 'slug', 'owner', 'date_added', 'date_updated', 'publish')
     search_fields = ['title', 'text']
     list_filter = ['date_added', 'title', 'owner', 'publish']
 
@@ -21,10 +21,13 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('name', 'body', 'post', 'created_on', 'active')
     list_filter = ('active', 'created_on')
     search_fields = ('name', 'email', 'body')
-    actions = ['approve_comments']
+    actions = ['disapprove_comments', 'approve_comments']
+
+    def disapprove_comments(self, request, queryset):
+        queryset.update(active=False)
 
     def approve_comments(self, request, queryset):
         queryset.update(active=True)
-
+        
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Comment, CommentAdmin)

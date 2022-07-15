@@ -1,13 +1,14 @@
 {% extends 'blogs/base.html' %}
-{% load bootstrap4 %}
+{% load static %}
+{% load bootstrap5 %}
 
 {% block page_header %}
-  <h4><a href="{% url 'blogs:post' post.id %}">{{ post }}</a></h4>
+  <h4><a href="{{ post.get_absolute_url }}">{{ post }}</a></h4>
 {% endblock page_header %}
 
 
 {% block content %}
-  <form action="{% url 'blogs:edit_post' post.id %}" method="post" class="form">
+  <form action="/edit_post/{{ post.slug  }}/" method="post" class="form">
       {% csrf_token %}
       {% bootstrap_form form %}
       {% buttons %}

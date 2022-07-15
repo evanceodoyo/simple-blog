@@ -9,9 +9,12 @@ from django.core.exceptions import ValidationError
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = BlogPost
-        fields = ['title', 'text', 'publish', 'allow_comments']
+        fields = ['title','text', 'publish', 'allow_comments']
         labels = {'title': 'Title', 'text': 'Post', 'publish': 'Make Public', 'allow_comments': 'Allow Comments'}
         widgets = {'text': forms.Textarea(attrs={'cols': 80})}
+
+    def clean(self):
+        pass
 
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(label='Username', min_length=5, max_length=80)

@@ -1,21 +1,35 @@
 {% extends "blogs/index.html" %}
+{% load bootstrap5 %}
+{% load static %}
 
 {% block page_header %}
 <h4 class="h4">Blog Posts</h4>
+<form method="GET" action="{% url 'blogs:posts' %}">
+    <div class="input-group">
+        <input class="form-control" type="search" placeholder="Search by article title, author or text" aria-label="Search" name="search">
+    <div class="input-group-append">
+        <input class="btn btn-outline-primary" type="submit" value="Search">
+    </div>
+    </div>
+</form>
 {% endblock page_header %}
 
 {% block content %}
-
     <h5 class="h5"><a href="{% url 'blogs:new_post' %}">Add a new post</a></h5>
-    <p>(Click on the title to read the post)</p>
-    <ul>
-        {% for post in posts %}
-            <li><h6>
-              <a href="{% url 'blogs:post' post.id %}">{{ post }}</a>
-            </h6></li>
+    <ul class="list-group-flush" style="line-height: 1.5;">
+         {% for post in posts %}         
+                  
+            <li class="list-group list-group-item font-weight-normal">
+                <h6>
+                <a href="{{ post.get_absolute_url }}">{{ post|upper }}</a>
+                </h6>
+                <p>By {{ post.owner.username.title }} | {{ post.date_added|date:'F jS, Y'}}<p/>
+                <p>{{ post.text|truncatewords:50}} <a class="btn btn-primary btn-sm" href="{{ post.get_absolute_url }}">Read More</a></p>
+            </li>
+              
         {% empty %}
-            <li><h6 class="h6">
-                You have not created any posts yet.
+            <li class="list-group-item"><h6 class="h6">
+                No articles found.
             </li></h6>
         {% endfor %}
     </ul>

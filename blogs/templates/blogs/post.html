@@ -1,46 +1,46 @@
 {% extends 'blogs/base.html' %}
-{% load bootstrap4 %}
+{% load bootstrap5 %}
+{% load static %}
 
 {% block page_header %}
     {% if post %}
-      <h4 class="h4">{{ post.title }}</h4>
+      <h4 class="h4">{{ post.title | upper }}</h4>
     {% endif %}
-
 {% endblock page_header %}
 
 {% block content %}
   <div class="card mb-3" >
     <div class="card-header h5">
-        {{ post.date_added|date:'M d, Y H:i' }}
+       By {{post.owner.username.title }} | {{ post.date_added|date:'M jS, Y' }}
 
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user == post.owner %}
           <small>
-            <a class="card-link" href="{% url 'blogs:edit_post' post.id %}">Edit Post</a> <a class="card-link" href="{% url 'blogs:delete_post' post.id %}">Delete Post </a>
-          </small>                
+            <a class="card-link" href="/edit_post/{{ post.slug }}">Edit Post</a> <a class="card-link" href="/delete_post/{{ post.slug }}">Delete Post </a>
+          </small>            
         {% endif %}
+
     </div>
         
     <div class="card-body font-weight-normal" style="line-height: 1.5;">
-      {{ post.text|linebreaks }}
-
-      <i><strong>Author: {{ post.owner.username.title }} </strong></i>
+      {{ post.text }}
     </div>
   </div>
+
   {% if post.allow_comments %}
     <div class="col-md-8 card mb-4 mt-3">
-      <div class="card-body h6">
+      <div class="card-body">
         <!-- comments  -->
-          <h5 class="h">{{ comments.count }} comment{{comments.count | pluralize }}</h5>
+          <h5 class="h">{{ comments.count }} comment{{ comments.count | pluralize }}</h5>
   
           {% for comment in comments reversed %}
             <div class="comments" style="padding: 10px;">
-              <p class="font-weight-bold">
+              <p class="h6">
                 {{ comment.name }}
-                <span class="text-muted font-weight-normal">
+                <span class="text-muted">
                   {{ comment.created_on }}
                 </span>
               </p>
-              {{ comment.body | linebreaks }}
+              <p class="font-weight-normal">{{ comment.body | linebreaks }}</p>
             </div>
           {% endfor %}
   
@@ -49,7 +49,7 @@
     <div class="col-md-8 card mb-4 mt-3">
       <div class="card-body h6">
         {% if new_comment %}
-        <div class="alert alert-success" role="alert">Your comment is awaiting review.
+        <div class="alert alert-success" role="alert">Comment submitted successfully.
         </div>
         {% else %}
           <h5 class="h5">Leave a comment</h5>

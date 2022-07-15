@@ -1,6 +1,5 @@
 # Blog
-This is a simple blog that allows users to register/log in and add, edit, or delete posts. After creating or editing posts, users can choose to make their post public (publish) or private and allow or disallow comments. Posts marked as public by the users are visible to unauthenticated users on a read-only basis.
-Live application [here](https://odo-blogs.herokuapp.com/)
+This is a simple blog to explore the Django's CRUD functionality. It allows users to register/log in and add, edit, or delete posts. After creating or editing posts, users can choose to make their post public (publish) or private and allow or disallow comments. Posts marked as public by the users are visible to unauthenticated users on a read-only basis.
 
 # Author Information 
 Evance Odoyo
